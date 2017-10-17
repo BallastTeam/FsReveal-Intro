@@ -1,0 +1,518 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FsReveal</title>
+    <meta name="description" content="Введение в FsReveal">
+    <meta name="author" content="Зайнуллин Фархад">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="//code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="//code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link type="text/css" rel="stylesheet" href="fsharp.formatting/styles/style.css" />
+    <link type="text/css" rel="stylesheet" href="fsharp.formatting/styles/deedle.css" />
+    <link type="text/css" rel="stylesheet" href="css/custom.css" />
+    <script src="fsharp.formatting/styles/tips.js" type="text/javascript"></script>
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/fsreveal.css">
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://"+window.location.host+"/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+</head>
+<body>
+    <div class="reveal">
+        <div class="tip" id="fs1">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs2">val reduce : reduction:(&#39;T -&gt; &#39;T -&gt; &#39;T) -&gt; list:&#39;T list -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.List.reduce</div>
+
+        <!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            <section >
+<h1>FsReveal</h1>
+<h2>Введение</h2>
+<p>Зайнуллин Фархад</p>
+<p>tg: @Kleidemos</p>
+</section>
+<section >
+<h3>Что есть FsReveal?</h3>
+<ul>
+<li>Генерирует презентации на <a href="http://lab.hakim.se/reveal-js/#/">reveal.js</a> из <a href="http://daringfireball.net/projects/markdown/">markdown</a></li>
+<li>Использует <a href="https://github.com/tpetricek/FSharp.Formatting">FSharp.Formatting</a> для разбора markdown файлов</li>
+</ul>
+</section>
+<section >
+<section >
+<h3>Reveal.js</h3>
+<ul>
+<li>Фреймворк для легкой генерации визуально привлекательных презентаций <strong>на HTML</strong>.</li>
+</ul>
+<blockquote>
+<p><strong>Atwood's Law</strong>: any application that can be written in JavaScript, will eventually be written in JavaScript.</p>
+</blockquote>
+</section>
+<section >
+<h5>Минимальный пример рабочей презентации на Reveal.js</h5>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="html"><span class="k">&lt;</span><span class="i">html</span><span class="k">&gt;</span>
+  <span class="k">&lt;</span><span class="i">head</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">link</span> <span class="o">rel</span><span class="k">="stylesheet"</span> <span class="o">href</span><span class="k">="css/reveal.css"</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">link</span> <span class="o">rel</span><span class="k">="stylesheet"</span> <span class="o">href</span><span class="k">="css/theme/white.css"</span><span class="k">&gt;</span>
+  <span class="k">&lt;/</span><span class="i">head</span><span class="k">&gt;</span>
+  <span class="k">&lt;</span><span class="i">body</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">div</span> <span class="o">class</span><span class="k">="reveal"</span><span class="k">&gt;</span>
+      <span class="k">&lt;</span><span class="i">div</span> <span class="o">class</span><span class="k">="slides"</span><span class="k">&gt;</span>
+        <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>Slide 1<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+        <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>Slide 2<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+      <span class="k">&lt;/</span><span class="i">div</span><span class="k">&gt;</span>
+    <span class="k">&lt;/</span><span class="i">div</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">script</span> <span class="o">src</span><span class="k">="js/reveal.js"</span><span class="k">&gt;&lt;/</span><span class="i">script</span><span class="k">&gt;</span>
+    &lt;script&gt;
+      Reveal.initialize();
+    <span class="k">&lt;/</span><span class="i">script</span><span class="k">&gt;</span>
+  <span class="k">&lt;/</span><span class="i">body</span><span class="k">&gt;</span>
+<span class="k">&lt;/</span><span class="i">html</span><span class="k">&gt;</span>
+</code></pre></td></tr></table>
+</section>
+<section >
+<h5>Дерево слайдов</h5>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="html"><span class="k">&lt;</span><span class="i">div</span> <span class="o">class</span><span class="k">="reveal"</span><span class="k">&gt;</span>
+  <span class="k">&lt;</span><span class="i">div</span> <span class="o">class</span><span class="k">="slides"</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>Single Horizontal Slide<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+    <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>
+      <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>Vertical Slide 1<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+      <span class="k">&lt;</span><span class="i">section</span><span class="k">&gt;</span>Vertical Slide 2<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+    <span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+  <span class="k">&lt;/</span><span class="i">div</span><span class="k">&gt;</span>
+<span class="k">&lt;/</span><span class="i">div</span><span class="k">&gt;</span>
+</code></pre></td></tr></table>
+</section>
+<section >
+<h5>Markdown</h5>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="html"><span class="k">&lt;</span><span class="i">section</span> <span class="o">data-markdown</span><span class="k">&gt;</span>
+  <span class="k">&lt;</span><span class="i">textarea</span> <span class="o">data-template</span><span class="k">&gt;</span>
+    ## Page title
+
+    A paragraph with some text and a [link](http://hakim.se).
+  <span class="k">&lt;/</span><span class="i">textarea</span><span class="k">&gt;</span>
+<span class="k">&lt;/</span><span class="i">section</span><span class="k">&gt;</span>
+</code></pre></td></tr></table>
+</section>
+</section>
+<section >
+<section >
+<h3>FSharp.Formatting</h3>
+<ol>
+<li>Берет fsx или md файлы.</li>
+<li>Творит магию.</li>
+<li>Выдает HTML / LaTeX файлы.</li>
+<li>Могет в подсветку синтаксиса и вывод типов для HTML.</li>
+</ol>
+</section>
+<section >
+<h4>Markdown</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip"><code lang="markdown"># First-level heading
+
+    [hide]
+    let print s = printfn "%s" s
+
+Some more documentation using `Markdown`.
+
+    [module=Hello]
+    let helloWorld() = print "Hello world!"
+
+## Second-level heading
+With some more documentation
+
+    [lang=csharp]
+    Console.WriteLine("Hello world!");
+</code></pre></td></tr></table>
+</section>
+<section >
+<h4>F# Script</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fs"><span class="c">(**</span>
+<span class="c"># First-level heading</span>
+<span class="c">Some more documentation using `Markdown`.</span>
+<span class="c">*)</span>
+
+<span class="c">(*** include: final-sample ***)</span>
+
+<span class="c">(** </span>
+<span class="c">## Second-level heading</span>
+<span class="c">With some more documentation</span>
+<span class="c">*)</span>
+
+<span class="c">(*** define: final-sample ***)</span>
+<span class="k">let</span> helloWorld() = printfn <span class="s">"Hello world!"</span>
+</code></pre></td></tr></table>
+</section>
+<section >
+<h1>Магия</h1>
+</section>
+<section >
+<p>HTML или LaTex</p>
+</section>
+<section >
+<h4>А еще:</h4>
+<ul>
+<li>Выполнение кода и использование результата.</li>
+<li>Собственные обработчики деревьев.</li>
+<li>Работа с обычным md.</li>
+<li>
+Подсветка и подсказки:
+<ul>
+<li>Больше для fsx.</li>
+<li>Меньше для md.</li>
+</ul>
+</li>
+</ul>
+</section>
+<section data-background="images/tooltips.gif">
+<p><img src="images/tooltips.gif" alt="" /></p>
+</section>
+</section>
+<section >
+<section >
+<h3>Что было сделано</h3>
+<p><em>Приблизительно</em></p>
+<ol>
+<li>Выяснили, что жрет Reveal.Js.</li>
+<li>Научили FSharp.Formatting генерировать соответствующую структуру.</li>
+<li>Научили FSharp.Formatting обрабатывать конфиги.</li>
+<li>Научили Reveal.Js использовать FSharp.Formatting для анализа F#.</li>
+<li>Автоматизировали генерацию презентаций.</li>
+<li>Написали сервер для realtime представления.</li>
+<li>Собрали все в один проект для упрощенной работы.</li>
+</ol>
+</section>
+<section data-background="images/coincidence.jpg" data-background-repeat="repeat" data-background-size="400px">
+<p><img src="images/FsRevealScheme.png" alt="" /></p>
+</section>
+</section>
+<section >
+<section >
+<h3>Подсветка синтаксиса</h3>
+<h4>F#</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">a</span> <span class="o">=</span> <span class="n">5</span>
+<span class="k">let</span> <span class="i">factorial</span> <span class="i">x</span> <span class="o">=</span> [<span class="n">1..</span><span class="i">x</span>] <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">reduce</span> <span class="o">(*)</span>
+<span class="k">let</span> <span class="i">c</span> <span class="o">=</span> <span class="i">factorial</span> <span class="i">a</span>
+</code></pre></td>
+</tr>
+</table>
+<p><em>С подсказками.</em></p>
+</section>
+<section >
+<h4>C#</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="cs"><span class="k">using</span> System;
+
+<span class="k">class</span> Program
+{
+    <span class="k">static</span> <span class="k">void</span> Main()
+    {
+        Console.WriteLine(<span class="s">"Hello, world!"</span>);
+    }
+}
+</code></pre></td></tr></table>
+<p><em>Здесь и далее без подсказок</em></p>
+</section>
+<section >
+<h4>JavaScript</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="js"><span class="k">function</span> copyWithEvaluation(iElem, elem) {
+    <span class="k">return</span> <span class="k">function</span> (obj) {
+        <span class="k">var</span> newObj <span class="o">=</span> {};
+        <span class="k">for</span> (<span class="k">var</span> p <span class="k">in</span> obj) {
+            <span class="k">var</span> v <span class="o">=</span> obj[p];
+            <span class="k">if</span> (<span class="k">typeof</span> v <span class="o">=</span><span class="o">=</span><span class="o">=</span> <span class="s">"function"</span>) {
+                v <span class="o">=</span> v(iElem, elem);
+            }
+            newObj[p] <span class="o">=</span> v;
+        }
+        <span class="k">if</span> (!newObj.exactTiming) {
+            newObj.delay <span class="o">+</span><span class="o">=</span> exports._libraryDelay;
+        }
+        <span class="k">return</span> newObj;
+    };
+}
+</code></pre></td></tr></table>
+</section>
+<section >
+<h4>Haskell</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="haskell">recur_count k <span class="prep">=</span> <span class="n">1</span> : <span class="n">1</span> : zipWith recurAdd (recur_count k) (tail (recur_count k))
+        <span class="k">where</span> recurAdd x y <span class="prep">=</span> k * x <span class="prep">+</span> y
+
+main <span class="prep">=</span> <span class="k">do</span>
+  argv <span class="prep">&lt;</span><span class="prep">-</span> getArgs
+  inputFile <span class="prep">&lt;</span><span class="prep">-</span> openFile (head argv) ReadMode
+  line <span class="prep">&lt;</span><span class="prep">-</span> hGetLine inputFile
+  <span class="k">let</span> [n,k] <span class="prep">=</span> map read (words line)
+  printf <span class="s">"%d\n"</span> ((recur_count k) !! (n<span class="n">-1</span>))
+</code></pre></td></tr></table>
+<p><em>code from <a href="https://github.com/NashFP/rosalind/blob/master/mark_wutka%2Bhaskell/FIB/fib_ziplist.hs">NashFP/rosalind</a></em></p>
+</section>
+<section >
+<h3>SQL</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="sql"><span class="k">select</span> *
+<span class="k">from</span>
+(<span class="k">select</span> <span class="n">1</span> <span class="k">as</span> Id <span class="k">union</span> <span class="k">all</span> <span class="k">select</span> <span class="n">2</span> <span class="k">union</span> <span class="k">all</span> <span class="k">select</span> <span class="n">3</span>) <span class="k">as</span> X
+<span class="k">where</span> Id <span class="k">in</span> (@Ids<span class="n">1</span>, @Ids<span class="n">2</span>, @Ids<span class="n">3</span>)
+</code></pre></td></tr></table>
+<p><em>sql from <a href="https://code.google.com/p/dapper-dot-net/">Dapper</a></em></p>
+</section>
+<section >
+<h3>LaTeX</h3>
+<p><strong>Bayes' Rule</strong></p>
+<p><span class="math">\(\Pr(A|B)=\frac{\Pr(B|A)\Pr(A)}{\Pr(B|A)\Pr(A)+\Pr(B|\neg A)\Pr(\neg A)}\)</span></p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip"><code lang="LaTeX">$ \Pr(A|B)=\frac{\Pr(B|A)\Pr(A)}{\Pr(B|A)\Pr(A)+\Pr(B|\neg A)\Pr(\neg A)} $
+</code></pre></td></tr></table>
+</section>
+</section>
+<section >
+<section >
+<h2>Демки</h2>
+</section>
+<section >
+<h3>Первая загрузка проекта</h3>
+<p>Вбиваем <a href="https://yandex.ru/search/?text=fsreveal">fsreveal</a> в ближайшем поисковике.</p>
+</section>
+<section >
+<h3>Куда писать</h3>
+</section>
+<section >
+<h3>Куда рыть</h3>
+</section>
+</section>
+<section >
+<section >
+<h3>Что дальше?</h3>
+</section>
+<section >
+<h3>Использовать</h3>
+<h4>С нуля</h4>
+<ul>
+<li>Мелкие ненормированные презентации</li>
+<li>Есть код на F#</li>
+<li>Много кода на поддерживаемых языках</li>
+</ul>
+</section>
+<section >
+<h4>После допиливания</h4>
+<ul>
+<li>Несильно нормированные презентации</li>
+<li>Чудовищно много кода</li>
+</ul>
+</section>
+<section >
+<h3>Развивать</h3>
+<h4>Что?</h4>
+<ul>
+<li>DSL для основных фич Reveal.Js</li>
+<li>
+Сложные методы взаимодействия
+<ul>
+<li>Синхронизация на всех устройствах</li>
+<li>Контроль доступа</li>
+<li>Параллельные группы вертикальных слайдов</li>
+<li>И т.д.</li>
+</ul>
+</li>
+</ul>
+</section>
+<section data-background="lightgrey">
+<h4>Как?</h4>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip"><code lang="md">---
+* data-background : lightgrey
+
+### Слайд на светло сером фоне
+---
+</code></pre></td></tr></table>
+</section>
+</section>
+<section >
+<h3>Спасибо за внимание</h3>
+</section>
+<section >
+<h3>Вопросы?</h3>
+</section>
+
+
+        </div>
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script>
+        // Add the nohighlight class and data-noescape attribute to code elements that have already been formatted by FSharp.Formatting
+        $('pre.highlighted code').addClass('nohighlight').attr('data-noescape', '');
+
+        // Full list of configuration options available here:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+
+            transition: 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+            // Parallax scrolling
+            // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+            // parallaxBackgroundSize: '2100px 900px',
+
+            // Optional libraries used to extend on reveal.js
+            dependencies: [
+                { src: 'lib/js/classList.js', condition: function () { return !document.body.classList; } },
+                { src: 'plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: 'plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+                { src: 'plugin/zoom-js/zoom.js', async: true, condition: function () { return !!document.body.classList; } },
+                { src: 'plugin/notes/notes.js', async: true, condition: function () { return !!document.body.classList; } }
+            ]
+        });
+
+    </script>
+</body>
+</html>
+
